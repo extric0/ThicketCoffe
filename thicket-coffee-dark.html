@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thicket Coffee Co.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --moss:#2f4a3c;
+    --moss-deep:#1d2f26;
+    --ivory:#f3efe3;
+    --ivory-warm:#ece5d3;
+    --brass:#c08a34;
+    --clay:#b4592f;
+    --ink:#21261f;
+    --line: rgba(33,38,31,0.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ivory);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    font-weight:400;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.serif{font-family:'Fraunces', serif;}
+  .mono{font-family:'IBM Plex Mono', monospace; letter-spacing:0.02em;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ---------- Vine motif (signature element) ---------- */
+  .vine-rule{
+    width:100%; height:34px; overflow:hidden; position:relative;
+  }
+  .vine-rule svg{width:100%; height:100%;}
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(243,239,227,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-wrap{
+    max-width:1180px; margin:0 auto; padding:18px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand-mark{width:30px; height:30px;}
+  .brand-name{font-size:1.15rem; font-weight:500; letter-spacing:0.01em;}
+  nav ul{list-style:none; display:flex; gap:32px;}
+  nav a{
+    font-size:0.92rem; font-weight:500; color:var(--moss-deep);
+    position:relative; padding:4px 0;
+  }
+  nav a:focus-visible, a:focus-visible, button:focus-visible{
+    outline:2px solid var(--brass); outline-offset:3px; border-radius:2px;
+  }
+  nav a::after{
+    content:""; position:absolute; left:0; bottom:0; height:1px; width:0;
+    background:var(--brass); transition:width .25s ease;
+  }
+  nav a:hover::after{width:100%;}
+  .nav-cta{
+    background:var(--moss); color:var(--ivory); padding:10px 20px;
+    border-radius:2px; font-size:0.85rem; font-weight:500; letter-spacing:0.02em;
+    transition:background .2s ease;
+  }
+  .nav-cta:hover{background:var(--moss-deep);}
+  .menu-toggle{display:none;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    max-width:1180px; margin:0 auto;
+    padding:64px 28px 40px;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;
+  }
+  .eyebrow{
+    font-size:0.78rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--clay); font-weight:500; margin-bottom:18px; display:block;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 5.2vw, 4.4rem);
+    line-height:1.02; font-weight:500; color:var(--moss-deep);
+    max-width:11ch;
+  }
+  .hero h1 em{font-style:italic; font-weight:400; color:var(--clay);}
+  .hero p.lede{
+    margin-top:22px; font-size:1.08rem; line-height:1.6; max-width:42ch; color:#3a3f34;
+  }
+  .hero-actions{display:flex; gap:16px; margin-top:32px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--clay); color:var(--ivory); padding:14px 26px;
+    border-radius:2px; font-size:0.92rem; font-weight:500; letter-spacing:0.01em;
+    transition:transform .2s ease, background .2s ease; display:inline-block;
+  }
+  .btn-primary:hover{background:#94441f; transform:translateY(-2px);}
+  .btn-ghost{
+    border:1px solid var(--moss); padding:13px 24px; border-radius:2px;
+    font-size:0.92rem; font-weight:500; color:var(--moss-deep);
+    transition:background .2s ease;
+  }
+  .btn-ghost:hover{background:rgba(47,74,60,0.08);}
+
+  .hero-art{
+    position:relative; aspect-ratio:4/5; border-radius:4px; overflow:hidden;
+    background:linear-gradient(155deg,#3a5747, var(--moss-deep));
+  }
+  .hero-art svg{position:absolute; inset:0; width:100%; height:100%;}
+  .hero-tag{
+    position:absolute; bottom:20px; left:20px; right:20px;
+    background:rgba(243,239,227,0.94); padding:14px 16px; border-radius:2px;
+    display:flex; justify-content:space-between; align-items:baseline;
+  }
+  .hero-tag .mono{font-size:0.72rem; color:var(--moss-deep);}
+  .hero-tag .serif{font-size:1rem; font-style:italic;}
+
+  /* ---------- Marquee strip ---------- */
+  .strip{
+    background:var(--moss); color:var(--ivory);
+    padding:14px 0; overflow:hidden; white-space:nowrap;
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .strip-track{display:inline-flex; gap:48px; animation:scroll 28s linear infinite;}
+  .strip span{font-family:'IBM Plex Mono', monospace; font-size:0.82rem; letter-spacing:0.05em; opacity:0.9;}
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* ---------- Section shell ---------- */
+  section{max-width:1180px; margin:0 auto; padding:90px 28px;}
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:48px; gap:24px; flex-wrap:wrap;
+  }
+  .section-head h2{font-size:clamp(1.9rem,3vw,2.6rem); font-weight:500; color:var(--moss-deep);}
+  .section-head p{max-width:36ch; color:#4b5044; font-size:0.98rem; line-height:1.55;}
+
+  /* ---------- About ---------- */
+  .about{
+    display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px; align-items:center;
+    background:var(--ivory-warm); border-radius:4px; padding:56px;
+  }
+  .about-figure{aspect-ratio:1/1; border-radius:4px; overflow:hidden; background:var(--moss-deep); position:relative;}
+  .about-figure svg{width:100%; height:100%;}
+  .about h3{font-size:1.9rem; font-weight:500; color:var(--moss-deep); margin-bottom:16px;}
+  .about p{font-size:1.02rem; line-height:1.7; color:#3a3f34; margin-bottom:16px;}
+  .about-stats{display:flex; gap:40px; margin-top:28px;}
+  .about-stats div span{display:block;}
+  .about-stats .num{font-family:'Fraunces',serif; font-size:1.8rem; color:var(--clay); font-weight:500;}
+  .about-stats .label{font-size:0.78rem; text-transform:uppercase; letter-spacing:0.08em; color:#6b7060; margin-top:4px;}
+
+  /* ---------- Menu (ticket style) ---------- */
+  .menu-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:56px 64px;}
+  .menu-col h4{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--clay); margin-bottom:18px;
+    padding-bottom:10px; border-bottom:1px solid var(--line);
+  }
+  .menu-item{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:14px 0; border-bottom:1px dashed var(--line); gap:16px;
+  }
+  .menu-item:last-child{border-bottom:none;}
+  .menu-item-name{font-family:'Fraunces',serif; font-size:1.12rem; font-weight:500;}
+  .menu-item-desc{font-size:0.86rem; color:#65695a; margin-top:3px; max-width:34ch;}
+  .menu-item-price{font-family:'IBM Plex Mono',monospace; font-size:0.92rem; color:var(--moss-deep); white-space:nowrap;}
+
+  /* ---------- Gallery (polaroid scatter) ---------- */
+  .gallery{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:22px;
+  }
+  .polaroid{
+    background:#fff; padding:10px 10px 34px; box-shadow:0 8px 20px rgba(33,38,31,0.14);
+    transition:transform .25s ease, box-shadow .25s ease; cursor:default;
+  }
+  .polaroid:nth-child(2n){transform:rotate(-2.5deg);}
+  .polaroid:nth-child(3n){transform:rotate(2deg);}
+  .polaroid:nth-child(4n){transform:rotate(-1.2deg);}
+  .polaroid:hover{transform:rotate(0deg) translateY(-6px) scale(1.02); box-shadow:0 16px 30px rgba(33,38,31,0.2); z-index:2;}
+  .polaroid .frame{aspect-ratio:1/1; overflow:hidden; background:var(--moss);}
+  .polaroid .frame svg{width:100%; height:100%;}
+  .polaroid figcaption{
+    font-family:'IBM Plex Mono',monospace; font-size:0.7rem; text-align:center;
+    margin-top:10px; color:#4b5044;
+  }
+
+  /* ---------- Hours / Location ---------- */
+  .visit{
+    display:grid; grid-template-columns:1fr 1fr; gap:56px;
+    background:var(--moss-deep); color:var(--ivory); border-radius:4px; padding:56px;
+  }
+  .visit h2{color:var(--ivory);}
+  .hours-row{display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(243,239,227,0.14); font-size:0.95rem;}
+  .hours-row .day{font-weight:500;}
+  .hours-row .time{font-family:'IBM Plex Mono',monospace; color:#d8cfaf; opacity:0.85;}
+  .visit-addr{font-size:1.05rem; line-height:1.7; margin-top:18px;}
+  .visit-addr .serif{font-style:italic; font-size:1.3rem; display:block; margin-bottom:8px; color:#e7c98a;}
+  .map-swatch{
+    margin-top:26px; border:1px solid rgba(243,239,227,0.25); border-radius:3px;
+    aspect-ratio:16/9; position:relative; overflow:hidden; background:#243a2f;
+  }
+  .map-swatch svg{width:100%; height:100%;}
+
+  /* ---------- Footer / contact ---------- */
+  footer{background:var(--ivory-warm); border-top:1px solid var(--line);}
+  .footer-wrap{
+    max-width:1180px; margin:0 auto; padding:70px 28px 40px;
+    display:grid; grid-template-columns:1.2fr 0.8fr 0.8fr; gap:40px;
+  }
+  .footer-wrap h3{font-size:1.6rem; font-weight:500; color:var(--moss-deep); max-width:16ch;}
+  .footer-wrap p{color:#5a5f4f; margin-top:14px; font-size:0.95rem; line-height:1.6; max-width:34ch;}
+  .footer-col h5{font-size:0.78rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--clay); margin-bottom:14px;}
+  .footer-col a, .footer-col p{display:block; font-size:0.92rem; color:#3a3f34; margin-bottom:9px;}
+  .footer-col a:hover{color:var(--clay);}
+  .footer-bottom{
+    max-width:1180px; margin:0 auto; padding:20px 28px 34px;
+    display:flex; justify-content:space-between; font-size:0.76rem; color:#7a7e6c;
+    border-top:1px solid var(--line); flex-wrap:wrap; gap:8px;
+  }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:880px){
+    nav ul{display:none;}
+    .hero{grid-template-columns:1fr; padding-top:40px;}
+    .hero-art{aspect-ratio:16/10;}
+    .about{grid-template-columns:1fr; padding:32px;}
+    .menu-grid{grid-template-columns:1fr; gap:40px;}
+    .gallery{grid-template-columns:repeat(2,1fr);}
+    .visit{grid-template-columns:1fr; padding:32px;}
+    .footer-wrap{grid-template-columns:1fr; gap:32px;}
+  }
+</style>
+
+<style id="dark-cafe-overrides">
+:root{
+  --bg:#0b0a09!important;
+  --surface:#151311!important;
+  --surface-2:#1c1916!important;
+  --text:#f5efe7!important;
+  --muted:#b8aaa0!important;
+  --accent:#c99a62!important;
+  --accent-2:#8b5e3c!important;
+  --border:rgba(255,255,255,.09)!important;
+}
+html,body{background:#0b0a09!important;color:#f5efe7!important}
+body{
+  background-image:
+    radial-gradient(circle at 20% 10%,rgba(201,154,98,.10),transparent 28%),
+    radial-gradient(circle at 90% 20%,rgba(139,94,60,.08),transparent 30%)!important;
+}
+header,nav,.navbar,.nav,footer,.footer,.card,.menu-card,.product-card,.section-card,
+.modal,.dialog,.chat-window,.chatbox,.booking-card,.contact-card{
+  background:rgba(21,19,17,.94)!important;
+  color:#f5efe7!important;
+  border-color:rgba(255,255,255,.09)!important;
+}
+h1,h2,h3,h4,h5,h6,p,span,li,label{color:inherit}
+a{color:#d6ae7b!important}
+button,.btn,.cta{
+  background:#c99a62!important;color:#0b0a09!important;
+  border-color:#c99a62!important;
+}
+button:hover,.btn:hover,.cta:hover{background:#e0b77f!important}
+input,textarea,select{
+  background:#100f0d!important;color:#f5efe7!important;
+  border:1px solid rgba(255,255,255,.13)!important;
+}
+.hero,.hero-section{
+  background:linear-gradient(rgba(0,0,0,.50),rgba(0,0,0,.72)),var(--hero-bg,none)!important;
+}
+img{
+  border-radius:14px;
+  object-fit:cover;
+}
+.menu-grid,.products,.gallery,.cards,.grid{gap:24px!important}
+</style>
+
+<style id="coffee-photo-overrides">
+/* Add a subtle coffee-photo treatment to image placeholders */
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="15" stroke="#2f4a3c" stroke-width="1.2"/>
+        <path d="M16 24c0-5 -3-6-3-10 0-3 1.5-5 3-6 1.5 1 3 3 3 6 0 4 -3 5 -3 10z" fill="#2f4a3c"/>
+        <path d="M13 15c-1.5-1 -2-2.5 -1.5-4M19 15c1.5-1 2-2.5 1.5-4" stroke="#2f4a3c" stroke-width="1" fill="none"/>
+      </svg>
+      <span class="brand-name">Thicket Coffee Co.</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#about">Our Story</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#visit">Visit</a></li>
+      </ul>
+    </nav>
+    <a class="nav-cta" href="#visit">Find Us</a>
+  </div>
+  <div class="vine-rule">
+    <svg viewBox="0 0 1200 34" preserveAspectRatio="none">
+      <path d="M0 17 Q 30 2 60 17 T 120 17 T 180 17 T 240 17 T 300 17 T 360 17 T 420 17 T 480 17 T 540 17 T 600 17 T 660 17 T 720 17 T 780 17 T 840 17 T 900 17 T 960 17 T 1020 17 T 1080 17 T 1140 17 T 1200 17" stroke="#2f4a3c" stroke-width="1" fill="none" opacity="0.35"/>
+    </svg>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <span class="eyebrow">Specialty coffee · Dubai</span>
+    <h1>Slow mornings, <em>grown</em> not made.</h1>
+    <p class="lede">Thicket is a plant-filled coffee bar built for people who linger. Light-roast pours, botanical lattes, and a room full of green — a five-minute pickup or a two-hour stay, your call.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#menu">See the Menu</a>
+      <a class="btn-ghost" href="#visit">Visit Today</a>
+    </div>
+  </div>
+  <div class="hero-art">
+    <svg viewBox="0 0 500 620" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#3a5747"/>
+          <stop offset="1" stop-color="#1d2f26"/>
+        </linearGradient>
+      </defs>
+      <rect width="500" height="620" fill="url(#g1)"/>
+      <g opacity="0.9" stroke="#f3efe3" stroke-width="1.4" fill="none">
+        <path d="M250 560 C 250 460 230 420 250 340 C 270 420 250 460 250 560"/>
+        <path d="M250 400 C 200 380 180 340 190 300 C 230 320 250 360 250 400"/>
+        <path d="M250 400 C 300 380 320 340 310 300 C 270 320 250 360 250 400"/>
+        <path d="M250 320 C 210 300 195 265 205 230 C 240 250 255 285 250 320"/>
+        <path d="M250 320 C 290 300 305 265 295 230 C 260 250 245 285 250 320"/>
+        <path d="M250 240 C 220 220 212 190 220 165 C 248 182 258 210 250 240"/>
+        <path d="M250 240 C 280 220 288 190 280 165 C 252 182 242 210 250 240"/>
+      </g>
+      <circle cx="250" cy="150" r="10" fill="#c08a34"/>
+      <g fill="#e7c98a" opacity="0.85">
+        <circle cx="120" cy="500" r="2.5"/>
+        <circle cx="380" cy="180" r="2"/>
+        <circle cx="90" cy="230" r="2"/>
+        <circle cx="410" cy="440" r="2.5"/>
+        <circle cx="150" cy="120" r="2"/>
+      </g>
+    </svg>
+    <div class="hero-tag">
+      <span class="serif">Today's pour</span>
+      <span class="mono">Ethiopia Guji · light</span>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="strip-track">
+    <span>☕ SINGLE-ORIGIN POUR OVER</span>
+    <span>🌿 300+ PLANTS IN-HOUSE</span>
+    <span>🥐 FRESH PASTRY DAILY</span>
+    <span>📶 LAPTOP-FRIENDLY UPSTAIRS</span>
+    <span>☕ SINGLE-ORIGIN POUR OVER</span>
+    <span>🌿 300+ PLANTS IN-HOUSE</span>
+    <span>🥐 FRESH PASTRY DAILY</span>
+    <span>📶 LAPTOP-FRIENDLY UPSTAIRS</span>
+  </div>
+</div>
+
+<section id="about">
+  <div class="about reveal">
+    <div class="about-figure">
+      <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
+        <rect width="400" height="400" fill="#1d2f26"/>
+        <g stroke="#f3efe3" stroke-width="1.2" fill="none" opacity="0.85">
+          <ellipse cx="130" cy="140" rx="55" ry="30" transform="rotate(-30 130 140)"/>
+          <ellipse cx="220" cy="110" rx="60" ry="32" transform="rotate(15 220 110)"/>
+          <ellipse cx="300" cy="180" rx="50" ry="26" transform="rotate(-10 300 180)"/>
+          <ellipse cx="160" cy="230" rx="58" ry="30" transform="rotate(40 160 230)"/>
+          <ellipse cx="260" cy="260" rx="54" ry="28" transform="rotate(-25 260 260)"/>
+        </g>
+        <circle cx="200" cy="330" r="4" fill="#c08a34"/>
+      </svg>
+    </div>
+    <div>
+      <span class="eyebrow">Our story</span>
+      <h3>Started with one fern and a bad landlord.</h3>
+      <p>Thicket opened because the founders kept meeting friends in cafés that felt like waiting rooms — beige, rushed, forgettable. So they leased a corner spot with the best window light in the block and filled it with the plants they couldn't stop buying anyway.</p>
+      <p>Every cup is pulled to order, every pastry comes from the oven two doors down, and every table gets left alone for as long as you need it.</p>
+      <div class="about-stats">
+        <div><span class="num">04</span><span class="label">Years Roasting</span></div>
+        <div><span class="num">12</span><span class="label">Origins on Rotation</span></div>
+        <div><span class="num">300+</span><span class="label">Plants in the Room</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="menu">
+  <div class="section-head reveal">
+    <h2>What's pouring</h2>
+    <p>A short menu, changed with the season. Ask your barista what's brewing on the bar today.</p>
+  </div>
+  <div class="menu-grid reveal">
+    <div class="menu-col">
+      <h4>Coffee</h4>
+      <div class="menu-item">
+        <div><div class="menu-item-name">Thicket House Pour</div><div class="menu-item-desc">Rotating single origin, filter brewed to order</div></div>
+        <div class="menu-item-price">18</div>
+      </div>
+      <div class="menu-item">
+        <div><div class="menu-item-name">Fern Flat White</div><div class="menu-item-desc">Double ristretto, steamed oat or whole milk</div></div>
+        <div class="menu-item-price">20</div>
+      </div>
+      <div class="menu-item">
+        <div><div class="menu-item-name">Terracotta Latte</div><div class="menu-item-desc">House espresso, cinnamon-cardamom, warm milk</div></div>
+        <div class="menu-item-price">22</div>
+      </div>
+      <div class="menu-item">
+        <div><div class="menu-item-name">Cold Brew Concentrate</div><div class="menu-item-desc">18-hour steep, served over one large cube</div></div>
+        <div class="menu-item-price">19</div>
+      </div>
+    </div>
+    <div class="menu-col">
+      <h4>From the Kitchen</h4>
+      <div class="menu-item">
+        <div><div class="menu-item-name">Pistachio Croissant</div><div class="menu-item-desc">Baked fresh each morning, next door</div></div>
+        <div class="menu-item-price">16</div>
+      </div>
+      <div class="menu-item">
+        <div><div class="menu-item-name">Labneh & Za'atar Toast</div><div class="menu-item-desc">Sourdough, olive oil, sumac onions</div></div>
+        <div class="menu-item-price">24</div>
+      </div>
+      <div class="menu-item">
+        <div><div class="menu-item-name">Date & Walnut Loaf</div><div class="menu-item-desc">Sliced thick, served warm on request</div></div>
+        <div class="menu-item-price">15</div>
+      </div>
+      <div class="menu-item">
+        <div><div class="menu-item-name">Green Shakshuka Bowl</div><div class="menu-item-desc">Weekend brunch only, till 1pm</div></div>
+        <div class="menu-item-price">32</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="section-head reveal">
+    <h2>From the room</h2>
+    <p>What people actually post when they sit down for a while.</p>
+  </div>
+  <div class="gallery reveal">
+    <figure class="polaroid">
+      <div class="frame">
+        <svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#3a5747"/><circle cx="100" cy="130" r="55" fill="#f3efe3" opacity="0.9"/><rect x="70" y="60" width="60" height="14" rx="7" fill="#c08a34"/></svg>
+      </div>
+      <figcaption>@thicket.coffee</figcaption>
+    </figure>
+    <figure class="polaroid">
+      <div class="frame">
+        <svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#c9c2a6"/><path d="M0 140 Q100 100 200 140 L200 200 L0 200 Z" fill="#2f4a3c"/></svg>
+      </div>
+      <figcaption>window seat, 9am</figcaption>
+    </figure>
+    <figure class="polaroid">
+      <div class="frame">
+        <svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#1d2f26"/><circle cx="100" cy="100" r="40" fill="none" stroke="#e7c98a" stroke-width="6"/></svg>
+      </div>
+      <figcaption>latte art attempt #47</figcaption>
+    </figure>
+    <figure class="polaroid">
+      <div class="frame">
+        <svg viewBox="0 0 200 200"><rect width="200" height="200" fill="#b4592f" opacity="0.85"/><rect x="40" y="40" width="120" height="120" fill="none" stroke="#f3efe3" stroke-width="4"/></svg>
+      </div>
+      <figcaption>the good corner</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="visit">
+  <div class="visit reveal">
+    <div>
+      <span class="eyebrow" style="color:#e7c98a;">Hours</span>
+      <h2>Open early, closed slow.</h2>
+      <div style="margin-top:28px;">
+        <div class="hours-row"><span class="day">Sat – Wed</span><span class="time">7:00 — 22:00</span></div>
+        <div class="hours-row"><span class="day">Thursday</span><span class="time">7:00 — 23:00</span></div>
+        <div class="hours-row"><span class="day">Friday</span><span class="time">8:00 — 23:00</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="visit-addr">
+        <span class="serif">Find the fern on the awning.</span>
+        Al Wasl Road, Unit 4<br>
+        Jumeirah, Dubai<br>
+        +971 4 000 0000
+      </div>
+      <div class="map-swatch">
+        <svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="225" fill="#243a2f"/>
+          <g stroke="#e7c98a" stroke-width="1" opacity="0.5">
+            <line x1="0" y1="60" x2="400" y2="60"/>
+            <line x1="0" y1="140" x2="400" y2="140"/>
+            <line x1="110" y1="0" x2="110" y2="225"/>
+            <line x1="280" y1="0" x2="280" y2="225"/>
+          </g>
+          <circle cx="200" cy="100" r="7" fill="#c08a34"/>
+          <circle cx="200" cy="100" r="14" fill="none" stroke="#c08a34" stroke-width="1.5"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-wrap">
+    <div>
+      <h3>Come sit with us for a while.</h3>
+      <p>Walk-ins always welcome. Large groups and buyouts, drop us a line ahead of time.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Explore</h5>
+      <a href="#about">Our Story</a>
+      <a href="#menu">Menu</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#visit">Visit</a>
+    </div>
+    <div class="footer-col">
+      <h5>Say Hello</h5>
+      <p>hello@thicketcoffee.ae</p>
+      <p>+971 4 000 0000</p>
+      <a href="#">Instagram</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Thicket Coffee Co.</span>
+    <span class="mono">DEMO CONCEPT — NOT A LIVE BUSINESS</span>
+  </div>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.15});
+  revealEls.forEach(el=>io.observe(el));
+</script>
+
+
+<section class="coffee-gallery" style="padding:70px 6%;background:#0b0a09;">
+  <div style="max-width:1200px;margin:auto;">
+    <div style="margin-bottom:28px;">
+      <p style="letter-spacing:.18em;text-transform:uppercase;color:#c99a62;font-size:.8rem;">From the bar</p>
+      <h2 style="font-size:clamp(2rem,5vw,4rem);margin:.2em 0;">Coffee worth coming back for.</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;">
+      <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1400&q=85" alt="Freshly prepared coffee at Thicket Coffee" style="width:100%;height:330px;object-fit:cover;border-radius:16px;"><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1000&q=85" alt="Freshly prepared coffee at Thicket Coffee" style="width:100%;height:330px;object-fit:cover;border-radius:16px;"><img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1000&q=85" alt="Freshly prepared coffee at Thicket Coffee" style="width:100%;height:330px;object-fit:cover;border-radius:16px;"><img src="https://images.unsplash.com/photo-1512568400610-62da28bc8a13?auto=format&fit=crop&w=1000&q=85" alt="Freshly prepared coffee at Thicket Coffee" style="width:100%;height:330px;object-fit:cover;border-radius:16px;">
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
